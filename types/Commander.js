@@ -2,8 +2,9 @@ const { EventEmitter } = require('eventemitter3');
 const { userPerms, prefix } = require('../config');
 
 class Commander extends EventEmitter {
-  constructor() {
+  constructor(client) {
     super();
+    this.master = client;
     this.commands = [];
     this.prefix = prefix || ';';
   }

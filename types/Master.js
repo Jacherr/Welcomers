@@ -10,7 +10,7 @@ class Master extends EventEmitter {
     this.workers = [];
     this.tokens = [];
     this.masterToken = token;
-    this.commander = new Commander();
+    this.commander = new Commander(this);
     this.startMasterSocket();
     this.prepareCommander();
   }
