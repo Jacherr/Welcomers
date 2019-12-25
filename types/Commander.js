@@ -8,6 +8,7 @@ class Commander extends EventEmitter {
     this.master = client;
     this.commands = [];
     this.prefix = prefix || ';';
+    this.registerCommands()
   }
 
   onMessage(message) {
@@ -25,7 +26,6 @@ class Commander extends EventEmitter {
     }
   }
   getCommandByName(commandName) {
-    console.log(this.commands)
     return this.commands.find(command => command.name === commandName);
   }
   registerCommands() {
