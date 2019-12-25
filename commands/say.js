@@ -1,4 +1,6 @@
-const Command = require('../types/Command')
-module.exports = new Command({name: 'say', execute: function(msg, args) {
-    this.reply(msg, args.join(' '));
-}});
+module.exports = {
+    name: 'say',
+    execute(msg, args) {
+        this.reply(msg, args.join(' '));
+    }
+};

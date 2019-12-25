@@ -12,46 +12,46 @@ const master = new Master(masterToken);
 master.loadTokens(tokens);
 
 master.on('ready', () => {
-  const workerDelay = 100;
-  console.log(`Master instance ready, launching workers (delay: ${workerDelay}ms)`);
-  master.launchWorkers(workerDelay)
-    .then(() => {
-      console.log('Launched all workers');
-    })
-    .catch(error => {
-      console.error(error);
-    });
+	const workerDelay = 100;
+	console.log(`Master instance ready, launching workers (delay: ${workerDelay}ms)`);
+	master.launchWorkers(workerDelay)
+		.then(() => {
+			console.log('Launched all workers');
+		})
+		.catch(error => {
+			console.error(error);
+		});
 });
 
 master.on('workerCreate', worker => {
-  console.log(`Launched ${master.workers.length}/${master.tokens.length} workers`);
-  worker.on('ready', () => {
-    try {
-      worker.createMessage(logChannel, 'Started 😀😉');
-    } catch(e) {
-      console.error("=====\n\nError sending ready message: " + e.message + "\n\n=====")
-    }
-  });
+	console.log(`Launched ${master.workers.length}/${master.tokens.length} workers`);
+	worker.on('ready', () => {
+		try {
+			worker.createMessage(logChannel, 'Started 😀😉');
+		} catch(e) {
+			console.error("=====\n\nError sending ready message: " + e.message + "\n\n=====")
+		}
+	});
 });
 
 master.client.on('guildMemberAdd', async ({ member }) => {
-  if (member.guild.id !== welcomeGuild) return;
-  if (member.user.bot) return;
-  activeWelcoming[member.id] = true;
-  for (const worker of master.workers) {
-    if (!activeWelcoming[member.id]) return;  
-    const dmChannel = await worker.getDMChannel(member.id);
-    await worker.createMessage(welcomeChannel, `<@${member.id}> welcome 😉`)
-    await worker.createMessage(welcomeChannel, `<@${member.id}> enjoy your stay 😀`);
-    if(dmChannel) {
-      await worker.createMessage(dmChannel.id, `<@${member.id}> welcome to **${member.guild.name}** 😄`)
-      await worker.createMessage(dmChannel.id, `<@${member.id}> enjoy your stay 😀`);
-    }
-    // await Promise.wait(100);
-  }
-  delete activeWelcoming[member.id];
+	if (member.guild.id !== welcomeGuild) return;
+	if (member.user.bot) return;
+	activeWelcoming[member.id] = true;
+	for (const worker of master.workers) {
+		if (!activeWelcoming[member.id]) return;  
+		const dmChannel = await worker.getDMChannel(member.id);
+		await worker.createMessage(welcomeChannel, `<@${member.id}> welcome 😉`)
+		await worker.createMessage(welcomeChannel, `<@${member.id}> enjoy your stay 😀`);
+		if(dmChannel) {
+			await worker.createMessage(dmChannel.id, `<@${member.id}> welcome to **${member.guild.name}** 😄`)
+			await worker.createMessage(dmChannel.id, `<@${member.id}> enjoy your stay 😀`);
+		}
+		// await Promise.wait(100);
+	}
+	delete activeWelcoming[member.id];
 });
 master.client.on('guildMemberRemove', ({ userId, guildId }) => {
-  if (guildId !== welcomeGuild) return;
-  if (activeWelcoming[userId]) delete activeWelcoming[userId];
+	if (guildId !== welcomeGuild) return;
+	if (activeWelcoming[userId]) delete activeWelcoming[userId];
 });
