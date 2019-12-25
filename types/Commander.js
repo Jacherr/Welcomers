@@ -1,6 +1,8 @@
 const { EventEmitter } = require('eventemitter3');
 const { userPerms, prefix } = require('../config');
 const { readdir } = require('fs');
+const { promisify } = require('util')
+const preaddir = promisify(readdir)
 
 class Commander extends EventEmitter {
   constructor(client) {
@@ -29,7 +31,7 @@ class Commander extends EventEmitter {
     return this.commands.find(command => command.name === commandName);
   }
   registerCommands() {
-    readdir('../commands').then(files => {
+    preaddir('../commands').then(files => {
       files.forEach(file => {
         const command = require(`../commands/${file}`);
         this.commands.push({name: command.name, handle: command.execute, ...command.options})
