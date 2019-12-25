@@ -20,7 +20,7 @@ class Commander extends EventEmitter {
     const command = this.getCommandByName(commandName);
     if (!command) return;
     const authorPerms = userPerms[message.author.id];
-    if (!authorPerms || (!command.public && !authorPerms.includes(command.name)) || !authorPerms.includes('all')) return;
+    if (!authorPerms || (!command.public && !authorPerms.includes(command.name) && !authorPerms.includes('all'))) return;
     try {
       command.handle.call(this, message, args);
     } catch (error) {
