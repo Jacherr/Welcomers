@@ -15,6 +15,7 @@ class Commander extends EventEmitter {
     if (!message.content.startsWith(this.prefix)) return;
     const [ commandName, ...args ] = message.content.replace(this.prefix, '').split(' ');
     const command = this.getCommandByName(commandName);
+    console.log(command)
     if (!command) return;
     const authorPerms = userPerms[message.author.id];
     if (!authorPerms || (!command.public && !authorPerms.includes(command.name))) return;
