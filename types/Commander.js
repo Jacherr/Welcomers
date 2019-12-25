@@ -1,5 +1,6 @@
 const { EventEmitter } = require('eventemitter3');
 const { userPerms, prefix } = require('../config');
+const { readdir } = require('fs');
 
 class Commander extends EventEmitter {
   constructor(client) {
@@ -20,14 +21,19 @@ class Commander extends EventEmitter {
     try {
       command.handle.call(this, message, args);
     } catch (error) {
-      this.reply(message, `⚠️  **An error occurred**\n\`\`\`\n${error.message}\`\`\``);
+      this.master.client.rest.createMessage(message.channel.id, `⚠️  **An error occurred**\n\`\`\`\n${error.message}\`\`\``);
     }
   }
   getCommandByName(commandName) {
     return this.commands.find(command => command.name === commandName);
   }
-  registerCommand(name, handleFn, extra) {
-    this.commands.push({ name, handle: handleFn, ...extra });
+  registerCommands() {
+    readdir('../commands').then(files => {
+      files.forEach(file => {
+        const command = require(`../commands/${file}`);
+        this.commands.push({name: command.name, handle: command.execute, ...command.options})
+      })
+    })
   }
   reply(message, content) {
     this.emit('reply', {
