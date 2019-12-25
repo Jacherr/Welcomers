@@ -22,11 +22,9 @@ class Commander extends EventEmitter {
       this.reply(message, `⚠️  **An error occurred**\n\`\`\`\n${error.message}\`\`\``);
     }
   }
-
   getCommandByName(commandName) {
     return this.commands.find(command => command.name === commandName);
   }
-
   registerCommand(name, handleFn, extra) {
     this.commands.push({ name, handle: handleFn, ...extra });
   }
