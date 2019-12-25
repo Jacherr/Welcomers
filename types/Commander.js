@@ -28,7 +28,6 @@ class Commander extends EventEmitter {
     }
   }
   getCommandByName(commandName) {
-    console.log(this.commands)
     return this.commands.find(command => command.name === commandName);
   }
   registerCommands() {
