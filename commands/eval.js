@@ -1,3 +1,5 @@
+const { inspect } = require('util');
+
 module.exports = {
 	name: 'eval',
 	execute(msg, args) {
