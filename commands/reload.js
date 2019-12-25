@@ -18,5 +18,6 @@ module.exports = {
             this.commander.registerCommands();
         } );
         return this.master.client.rest.createMessage(msg.channel.id, 'Reloaded');
-    }
+    },
+	group: 'admin'
 };

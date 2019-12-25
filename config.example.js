@@ -5,9 +5,9 @@ module.exports = {
 		welcomeChannel: 'CHANNEL_ID',
 		logChannel: 'CHANNEL_ID',
 		welcomeGuild: 'GUILD_ID',
-		userPerms: {
-			'USER_ID': ['all'], // Gives access to all commands
-			'USER_ID': ['say', 'join', 'leave']
+		userGroups: {
+			'owner': ['USER_ID'],
+			'admin': ['USER_ID']
 		},
 		blacklistedIds: ['USER_ID', 'USER_ID']
 	}

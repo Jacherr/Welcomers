@@ -1,8 +1,10 @@
 const { EventEmitter } = require('eventemitter3');
-const { userPerms, prefix } = require('../config');
 const { readdir } = require('fs');
-const { promisify } = require('util')
-const preaddir = promisify(readdir)
+const { promisify } = require('util');
+const Command = require('./Command');
+const { userGroups, prefix } = require('../config');
+const preaddir = promisify(readdir);
+const groupNames = Object.keys(userGroups);
 
 class Commander extends EventEmitter {
 	constructor(client) {
@@ -19,8 +21,14 @@ class Commander extends EventEmitter {
 		const [ commandName, ...args ] = message.content.replace(this.prefix, '').split(' ');
 		const command = this.getCommandByName(commandName);
 		if (!command) return;
-		const authorPerms = userPerms[message.author.id];
-		if (!authorPerms || (!command.public && !authorPerms.includes(command.name) && !authorPerms.includes('all'))) return;
+        if (command.group) {
+            const level = groupNames.indexOf(command.group);
+            for (let i = 0; i <= level; i++) {
+                const group = userGroups[groupNames[i]];
+                if (group.includes(message.author.id)) break;
+                if (i === level) return;
+            }
+        }
 		try {
 			command.handle.call(this, message, args);
 		} catch (error) {
@@ -33,8 +41,9 @@ class Commander extends EventEmitter {
 	registerCommands() {
 		preaddir('./commands/').then(files => {
 			files.forEach(file => {
-				const command = require(`../commands/${file}`);
-				this.commands.push({name: command.name, handle: command.execute, ...command.options})
+                const commandData = require(`../commands/${file}`);
+                const command = new Command(commandData);
+				this.commands.push(command);
 			})
 		})
 	}

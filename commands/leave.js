@@ -4,5 +4,6 @@ module.exports = {
         for (const worker of this.master.workers) {
             worker.leaveVoiceChannel(msg.guild.id);
         }
-    }
+    },
+	group: 'admin'
 };

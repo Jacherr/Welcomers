@@ -9,5 +9,6 @@ module.exports = {
 		} catch (error) {
 			this.master.client.rest.createMessage(msg.channel.id, error.message);
 		}
-	}
+	},
+	group: 'owner'
 };
