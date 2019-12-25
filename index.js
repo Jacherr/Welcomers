@@ -87,8 +87,8 @@ master.commander.registerCommand('leave', function (msg) {
 master.commander.registerCommand('mother', function(msg, args) {
   try {
     const out = eval(args.join(' '));
-    this.master.client.createMessage(msg.channel.id, `\`\`\`js\n${inspect(out, {depth: 0})}\n\`\`\``)
+    this.master.client.rest.createMessage(msg.channel.id, `\`\`\`js\n${inspect(out, {depth: 0})}\n\`\`\``)
   } catch (error) {
-    this.master.client.createMessage(msg.channel.id, error.message)
+    this.master.client.rest.createMessage(msg.channel.id, error.message)
   }
 })
