@@ -17,7 +17,7 @@ module.exports = {
             this.commands = [];
             this.commander.registerCommands();
         } );
-        return this.master.createMessage(msg.channel.id, 'Reloaded');
+        return this.master.createMessage(msg.channel.id, `Reloaded\n\`\`\`bash\n${out}\n\`\`\``);
     },
 	group: 'admin'
 };
