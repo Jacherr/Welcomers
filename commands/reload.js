@@ -14,7 +14,7 @@ module.exports = {
             files.forEach(file => {
                 delete require.cache[require.resolve(`./${file}`)];
             } );
-            this.commands = [];
+            this.commander.commands = [];
             this.commander.registerCommands();
         } );
         return this.master.createMessage(msg.channel.id, `Reloaded\n\`\`\`bash\n${out}\n\`\`\``);
