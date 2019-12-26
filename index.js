@@ -44,8 +44,13 @@ master.client.on('guildMemberAdd', async ({ member }) => {
 		await worker.createMessage(welcomeChannel, `<@${member.id}> welcome 😉`)
 		await worker.createMessage(welcomeChannel, `<@${member.id}> enjoy your stay 😀`);
 		if(dmChannel) {
-			await worker.createMessage(dmChannel.id, `<@${member.id}> welcome to **${member.guild.name}** 😄`)
-			await worker.createMessage(dmChannel.id, `<@${member.id}> enjoy your stay 😀`);
+			try {
+				await worker.createMessage(dmChannel.id, `<@${member.id}> welcome to **${member.guild.name}** 😄`)
+				await worker.createMessage(dmChannel.id, `<@${member.id}> enjoy your stay 😀`);
+			} catch {
+				console.log("Failed to send messages to " + member.user.username)
+				break
+			}
 		}
 		// await Promise.wait(100);
 	}
