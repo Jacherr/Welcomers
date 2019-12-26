@@ -3,21 +3,25 @@ class Command {
 		this.name = name || null;
         this.execute = execute || null;
         this.group = group || null;
-		this.options = options || {};
+		this.options = Object.assign({}, options);
 		if (!name) {
-			throw new Error('Name is a required argument that is missing.')
+			throw new Error('Name is a required argument that is missing.');
 		} else if (!execute) {
-			throw new Error('Execute is a required argument that is missing.')
+			throw new Error('Execute is a required argument that is missing.');
 		}
 	}
 	init(commander) {
 		this.commander = commander;
 	}
-	get reply() {
-		return this.commander.reply
-	}
 	get master() {
-		return this.commander.master
-	}
+		return this.commander.master;
+    }
+    get workers() {
+        return this.master.workers;
+    }
+    
+    reply(msg, content) {
+        this.commander.createMessage(msg.channel.id, content);
+    }
 }
 module.exports = Command;

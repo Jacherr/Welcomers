@@ -15,7 +15,7 @@ class Master extends EventEmitter {
 		this.prepareCommander();
 	}
 	startMasterSocket() {
-		this.client = new ShardClient(this.masterToken);
+		this.client = new ShardClient(this.masterToken.replace('Bot ', ''));
 		this.client.on('gatewayReady', () => {
 			this.emit('ready');
 		});
@@ -47,10 +47,12 @@ class Master extends EventEmitter {
 		const workerData = {
 			token,
 			gatewayOptions: {
-				status: 'online',
-				game: {
-					type: 0,
-					name: 'i love not so super'
+				presence: {
+					status: 'online',
+					game: {
+						type: 0,
+						name: 'i love not so super'
+					}
 				}
 			}
 		};
@@ -73,6 +75,11 @@ class Master extends EventEmitter {
 		for (const worker of this.workers) {
 			await worker.instance.terminate();
 		}
+	}
+
+	createMessage(channelId, content) {
+		console.log(channelId, { content });
+		return this.client.rest.createMessage(channelId, { content });
 	}
 }
 

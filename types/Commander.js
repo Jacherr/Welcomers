@@ -12,7 +12,7 @@ class Commander extends EventEmitter {
 		this.master = client;
 		this.commands = [];
 		this.prefix = prefix || ';';
-		this.registerCommands()
+		this.registerCommands();
 	}
 
 	onMessage(message) {
@@ -20,7 +20,7 @@ class Commander extends EventEmitter {
 		if (!message.content.startsWith(this.prefix)) return;
 		const [ commandName, ...args ] = message.content.replace(this.prefix, '').split(' ');
 		const command = this.getCommandByName(commandName);
-		if (!command) return;
+        if (!command) return;
         if (command.group) {
             const level = groupNames.indexOf(command.group);
             for (let i = 0; i <= level; i++) {
@@ -30,9 +30,9 @@ class Commander extends EventEmitter {
             }
         }
 		try {
-			command.handle.call(this, message, args);
+			command.execute(message, args);
 		} catch (error) {
-			this.master.client.rest.createMessage(message.channel.id, `⚠️  **An error occurred**\n\`\`\`\n${error.message}\`\`\``);
+			this.master.createMessage(message.channel.id, `⚠️  **An error occurred**\n\`\`\`\n${error.message}\`\`\``);
 		}
 	}
 	getCommandByName(commandName) {
@@ -43,15 +43,13 @@ class Commander extends EventEmitter {
 			files.forEach(file => {
                 const commandData = require(`../commands/${file}`);
                 const command = new Command(commandData);
+                command.init(this);
 				this.commands.push(command);
-			})
-		})
-	}
-	reply(message, content) {
-		this.emit('reply', {
-			channelId: message.channel.id,
-			content
+			});
 		});
+	}
+	createMessage(channelId, content) {
+		this.emit('reply', { channelId, content });
 	}
 }
 

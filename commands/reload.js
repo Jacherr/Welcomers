@@ -8,7 +8,7 @@ module.exports = {
         try {
             out = require('child_process').execSync('git pull');
         } catch (e) {
-            return this.master.client.rest.createMessage(msg.channel.id, e.message);
+            return this.master.createMessage(msg.channel.id, e.message);
         }
         preaddir('./commands').then(files => {
             files.forEach(file => {
@@ -17,7 +17,7 @@ module.exports = {
             this.commands = [];
             this.commander.registerCommands();
         } );
-        return this.master.client.rest.createMessage(msg.channel.id, 'Reloaded');
+        return this.master.createMessage(msg.channel.id, 'Reloaded');
     },
 	group: 'admin'
 };
