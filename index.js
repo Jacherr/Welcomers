@@ -7,6 +7,13 @@ const Master = require('./types/Master');
 const tokens = tokensString.split(',').map(token => token.startsWith('Bot ') ? token : 'Bot ' + token);
 const activeWelcoming = {};
 
+let welcomeStatus = {
+    startedAt: 0,
+    endsAt: 0,
+	welcomes: 0,
+	alerted: false,
+};
+
 console.log('Starting master instance');
 const master = new Master(masterToken);
 master.loadTokens(tokens);
@@ -35,6 +42,19 @@ master.on('workerCreate', worker => {
 });
 
 master.client.on('guildMemberAdd', async ({ member }) => {
+	if(Date.now() > welcomeStatus.endsAt) {
+		welcomeStatus = {
+			startedAt: Date.now(),
+			endsAt: Date.now() + 10000,
+			welcomes: 0,
+			alerted: false,
+		}
+	} else if(welcomeStatus.welcomes > 3) {
+		if(welcomeStatus.alerted === false) {
+			welcomeStatus.alerted = true
+			return master.client.rest.createMessage('658333795673702423', "Too many people are joining and the welcoming got ratelimited ass")
+		} else return
+	}
 	if (member.guild.id !== welcomeGuild) return;
 	if (member.user.bot) return;
 	activeWelcoming[member.id] = true;
