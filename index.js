@@ -61,8 +61,8 @@ master.client.on('guildMemberAdd', async ({ member }) => {
 	for (const worker of master.workers) {
 		if (!activeWelcoming[member.id]) return;  
 		const dmChannel = await worker.getDMChannel(member.id);
-		await worker.createMessage(welcomeChannel, `<@${member.id}> welcome 😉`)
-		await worker.createMessage(welcomeChannel, `<@${member.id}> enjoy your stay 😀`);
+		//await worker.createMessage(welcomeChannel, `<@${member.id}> welcome 😉`)
+		//await worker.createMessage(welcomeChannel, `<@${member.id}> enjoy your stay 😀`);
 		if(dmChannel) {
 			try {
 				await worker.createMessage(dmChannel.id, `<@${member.id}> welcome to **${member.guild.name}** 😄`)
