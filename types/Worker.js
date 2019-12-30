@@ -6,7 +6,14 @@ class Worker extends EventEmitter {
 		this.instance = workerInstance;
 		this.data = workerData;
 		this.reqIdIncr = 0;
+		this.user = null;
+		this.getUser();
 		this.prepareEvents();
+	}
+	getUser() {
+		this.discordRequest('get', '/users/@me', null, true).then(user => {
+			this.user = user;
+		});
 	}
 	prepareEvents() {
 		this.instance.on('message', message => {
@@ -26,7 +33,7 @@ class Worker extends EventEmitter {
 		});
 	}
 
-	discordRequest(method, path, body) {
+	discordRequest(method, path, body, returnBody) {
 		const reqId = ++this.reqIdIncr;
 		return new Promise((resolve, reject) => {
 			this.instance.postMessage({
@@ -36,7 +43,7 @@ class Worker extends EventEmitter {
 					method,
 					url: `https://discordapp.com/api${path}`,
 					body: body || null,
-					returnBody: false,
+					returnBody: !!returnBody
 				}
 			});
 			this.waitForMessage({ id: reqId }, message => {
