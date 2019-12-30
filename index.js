@@ -34,7 +34,8 @@ master.on('workerCreate', worker => {
 	console.log(`Launched ${master.workers.length}/${master.tokens.length} workers`);
 	worker.on('ready', () => {
 		try {
-			worker.createMessage(logChannel, 'Started 😀😉');
+			console.log(worker.user.username + " started")
+			//worker.createMessage(logChannel, 'Started 😀😉');
 		} catch(e) {
 			console.error("=====\n\nError sending ready message: " + e.message + "\n\n=====")
 		}
