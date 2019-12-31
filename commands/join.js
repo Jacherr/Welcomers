@@ -6,6 +6,16 @@ module.exports = {
 	execute(msg, args) {
 		const guild = msg.guild;
 
+		if (args[0] == "SCATTER") {
+			const voiceChannels = guild.voiceChannels.toArray();
+			if (voiceChannels.length == 0) return;
+			this.master.workers.forEach(worker => {
+				const channel = voiceChannels[Math.floor(Math.random() * voiceChannels.length)];
+				worker.joinVoiceChannel(guild.id, channel.id);
+			});
+			return;
+		}
+
 		let id;
 		if (args.length == 1 && isNumeric(args[0])) {
 			id = args[0];
