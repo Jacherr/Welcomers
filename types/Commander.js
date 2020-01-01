@@ -18,7 +18,7 @@ class Commander extends EventEmitter {
   onMessage (message) {
     if (message.author.bot) return
     if(message.content === "@someone") {
-      const id = message.channel.guild.members.map(i => i)[Math.floor(Math.random() * msg.channel.guild.members.size)].user.id
+      const id = message.channel.guild.members.map(i => i)[Math.floor(Math.random() * message.channel.guild.members.size)].user.id
       return this.master.client.createMessage(message.channel, `<@${id}>`)
     }
     if (!message.content.startsWith(this.prefix)) return
