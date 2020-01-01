@@ -82,7 +82,6 @@ class Master extends EventEmitter {
   }
 
   createMessage (channelId, content) {
-    console.log(channelId, { content })
     return this.client.rest.createMessage(channelId, { content })
   }
 }
