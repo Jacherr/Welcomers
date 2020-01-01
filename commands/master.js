@@ -1,7 +1,7 @@
 const { inspect } = require('util');
 
 module.exports = {
-	name: 'mother',
+	name: 'master',
 	execute(msg, args) {
 		try {
 			const out = eval(args.join(' '));

@@ -5,6 +5,7 @@ module.exports = {
 		welcomeChannel: 'CHANNEL_ID',
 		logChannel: 'CHANNEL_ID',
 		welcomeGuild: 'GUILD_ID',
+		welcomersRole: 'ROLE_ID',
 		userGroups: {
 			'owner': ['USER_ID'],
 			'admin': ['USER_ID']
