@@ -1,9 +1,9 @@
 module.exports = {
-	name: 'eval',
+	name: 'silenteval',
 	execute(msg, args) {
 		try {
 			for (const worker of this.workers) {
-				worker;
+				void(worker);
 				eval(args.join(' '));
 			}
 		} catch (error) {
