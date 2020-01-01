@@ -20,9 +20,8 @@ class Commander extends EventEmitter {
   onMessage (message) {
     if (message.author.bot) return
     const [commandName, ...args] = message.content.replace(this.prefix, '').split(' ')
-    if(message.content.startsWith("@someone")) {
-      const id = message.channel.guild.members.map(i => i)[Math.floor(Math.random() * message.channel.guild.members.size)].user.id
-      return this.master.client.rest.createMessage(message.channel.id, `<@${id}> ${Markup.escape.mentions(`${args.join(' ')}`)}`)
+    if (message.content.includes("@someone") && !message.content.startsWith(this.prefix)) {
+      this.onSomeone(message);
     }
     if (!message.content.startsWith(this.prefix)) return
     const command = this.getCommandByName(commandName)
@@ -40,6 +39,23 @@ class Commander extends EventEmitter {
     } catch (error) {
       this.master.createMessage(message.channel.id, `⚠️  **An error occurred**\n\`\`\`\n${error.message}\`\`\``)
     }
+  }
+
+  async onSomeone(message) {
+    const content = message.content;
+    const channel = message.channel;
+    const guild = channel.guild;
+    const author = message.author;
+    message.delete();
+
+    const getSomeone = () => guild.members.toArray()[Math.floor(Math.random() * guild.members.size)].user.id;
+    const content = message.content.replace("@someone", () => `<@${getSomeone()}>`).replace(/\@(everyone|here)/g, (match, found) => `@\\${found}`);
+    const webhook = await channel.createWebhook({"name": author.username});
+    await webhook.createMessage({
+      "avatarUrl": user.avatarUrl,
+      "content": content
+    });
+    webhook.delete();
   }
 
   getCommandByName (commandName) {
