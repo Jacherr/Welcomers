@@ -5,6 +5,8 @@ const Command = require('./Command')
 const { userGroups, prefix } = require('../config')
 const preaddir = promisify(readdir)
 const groupNames = Object.keys(userGroups)
+const { Utils }  = require('detritus-client');
+const { Markup } = Utils;
 
 class Commander extends EventEmitter {
   constructor (client) {
@@ -17,12 +19,12 @@ class Commander extends EventEmitter {
 
   onMessage (message) {
     if (message.author.bot) return
+    const [commandName, ...args] = message.content.replace(this.prefix, '').split(' ')
     if(message.content === "@someone") {
       const id = message.channel.guild.members.map(i => i)[Math.floor(Math.random() * message.channel.guild.members.size)].user.id
-      return this.master.client.rest.createMessage(message.channel.id, `<@${id}>`)
+      return this.master.client.rest.createMessage(message.channel.id, Markup.escape.mentions(`<@${id}> ${args}`))
     }
     if (!message.content.startsWith(this.prefix)) return
-    const [commandName, ...args] = message.content.replace(this.prefix, '').split(' ')
     const command = this.getCommandByName(commandName)
     if (!command) return
     if (command.group) {
