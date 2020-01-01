@@ -22,7 +22,7 @@ class Commander extends EventEmitter {
     const [commandName, ...args] = message.content.replace(this.prefix, '').split(' ')
     if(message.content.startsWith("@someone")) {
       const id = message.channel.guild.members.map(i => i)[Math.floor(Math.random() * message.channel.guild.members.size)].user.id
-      return this.master.client.rest.createMessage(message.channel.id, Markup.escape.mentions(`<@${id}> ${args}`))
+      return this.master.client.rest.createMessage(message.channel.id, `<@${id}> ${Markup.escape.mentions(`${args.join(' ')}`)}`)
     }
     if (!message.content.startsWith(this.prefix)) return
     const command = this.getCommandByName(commandName)
