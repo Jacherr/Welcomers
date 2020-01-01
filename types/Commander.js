@@ -5,8 +5,6 @@ const Command = require('./Command')
 const { userGroups, prefix } = require('../config')
 const preaddir = promisify(readdir)
 const groupNames = Object.keys(userGroups)
-const { Utils }  = require('detritus-client');
-const { Markup } = Utils;
 
 class Commander extends EventEmitter {
   constructor (client) {
@@ -20,8 +18,8 @@ class Commander extends EventEmitter {
   onMessage (message) {
     if (message.author.bot) return
     const [commandName, ...args] = message.content.replace(this.prefix, '').split(' ')
-    if (message.content.includes("@someone") && !message.content.startsWith(this.prefix)) {
-      this.onSomeone(message);
+    if (message.content.includes('@someone') && !message.content.startsWith(this.prefix)) {
+      this.onSomeone(message)
     }
     if (!message.content.startsWith(this.prefix)) return
     const command = this.getCommandByName(commandName)
@@ -41,21 +39,21 @@ class Commander extends EventEmitter {
     }
   }
 
-  async onSomeone(message) {
-    const content = message.content;
-    const channel = message.channel;
-    const guild = channel.guild;
-    const author = message.author;
-    message.delete();
+  async onSomeone (message) {
+    let content = message.content
+    const channel = message.channel
+    const guild = channel.guild
+    const author = message.author
+    message.delete()
 
-    const getSomeone = () => guild.members.toArray()[Math.floor(Math.random() * guild.members.size)].user.id;
-    const content = message.content.replace("@someone", () => `<@${getSomeone()}>`).replace(/\@(everyone|here)/g, (match, found) => `@\\${found}`);
-    const webhook = await channel.createWebhook({"name": author.username});
+    const getSomeone = () => guild.members.toArray()[Math.floor(Math.random() * guild.members.size)].user.id
+    content = message.content.replace('@someone', () => `<@${getSomeone()}>`).replace(/\@(everyone|here)/g, (match, found) => `@\\${found}`)
+    const webhook = await channel.createWebhook({ name: author.username })
     await webhook.createMessage({
-      "avatarUrl": user.avatarUrl,
-      "content": content
-    });
-    webhook.delete();
+      avatarUrl: author.avatarUrl,
+      content: content
+    })
+    webhook.delete()
   }
 
   getCommandByName (commandName) {
@@ -73,7 +71,7 @@ class Commander extends EventEmitter {
     })
   }
 
-  createMessage(channelId, content) {
+  createMessage (channelId, content) {
     this.emit('reply', { channelId, content })
   }
 }
