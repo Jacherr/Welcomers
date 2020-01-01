@@ -1,7 +1,7 @@
 module.exports = {
-    name: 'say',
-    execute(msg, args) {
-        this.reply(msg, args.join(' '));
-    },
-	group: 'admin'
-};
+  name: 'say',
+  execute (msg, args) {
+    this.reply(msg, args.join(' '))
+  },
+  group: 'admin'
+}
