@@ -84,7 +84,7 @@ class Worker extends EventEmitter {
   getDMChannel (userId) {
     return this.discordRequest('post', '/users/@me/channels', {
       recipient_id: userId
-    })
+    }, true)
   }
 
   createMessage (channelId, content) {
