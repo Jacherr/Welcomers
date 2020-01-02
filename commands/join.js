@@ -26,7 +26,7 @@ module.exports = {
     } else {
       const keywords = args.map(term => term.toLowerCase())
       const channel = guild.voiceChannels.find(channel =>
-        keywords.every(keyword => channel.name.includes(keyword)))
+        keywords.every(keyword => channel.name.toLowerCase().includes(keyword)))
       if (!channel) {
         this.reply(msg, 'No voice channel with that name exists within this guild.')
         return
