@@ -16,18 +16,18 @@ module.exports = class MasterEval extends Command {
       const value = eval(args.join(' ')) // eslint-disable-line no-eval
       if (value instanceof Promise) {
         if (inspect(value) === 'Promise { <pending> }') {
-          this.master.createMessage(msg.channel.id, `**Resolving promise...**\n${wrapCodeblock(value)}`).then(masterMsg => {
+          this.master.createMessage(msg.channel.id, `**Resolving promise...**\n${this.wrapCodeblock(value)}`).then(masterMsg => {
             value.then(promiseValue => {
-              masterMsg.edit(`**Promise resolved** 😎\n${wrapCodeblock(promiseValue)}`)
+              masterMsg.edit(`**Promise resolved** 😎\n${this.wrapCodeblock(promiseValue)}`)
             })
           })
         } else {
           value.then(promiseValue => {
-            this.master.createMessage(msg.channel.id, `**Promise resolved** 😎\n${wrapCodeblock(promiseValue)}`)
+            this.master.createMessage(msg.channel.id, `**Promise resolved** 😎\n${this.wrapCodeblock(promiseValue)}`)
           })
         }
       } else {
-        this.master.createMessage(msg.channel.id, wrapCodeblock(value))
+        this.master.createMessage(msg.channel.id, this.wrapCodeblock(value))
       }
     } catch (error) {
       this.master.createMessage(msg.channel.id, error.message)
