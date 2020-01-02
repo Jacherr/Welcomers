@@ -1,11 +1,16 @@
+const Command = require('../types/Command')
 const { inspect } = require('util')
 
-function wrapCodeblock (value) {
-  return `\`\`\`js\n${inspect(value, { depth: 0 }).replace(/``/g, '``\u200b')}\n\`\`\``
-}
-
-module.exports = {
-  name: 'master',
+module.exports = class MasterEval extends Command {
+  get name () {
+    return 'master'
+  }
+  get group () {
+    return 'owner'
+  }
+  wrapCodeblock (value) {
+    return `\`\`\`js\n${inspect(value, { depth: 0 }).replace(/``/g, '``\u200b')}\n\`\`\``
+  }
   execute (msg, args) {
     try {
       const value = eval(args.join(' ')) // eslint-disable-line no-eval
@@ -27,6 +32,5 @@ module.exports = {
     } catch (error) {
       this.master.createMessage(msg.channel.id, error.message)
     }
-  },
-  group: 'owner'
+  }
 }

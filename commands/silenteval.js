@@ -1,5 +1,12 @@
-module.exports = {
-  name: 'silenteval',
+const Command = require('../types/Command')
+
+module.exports = class SilentEval extends Command {
+  get name () {
+    return 'silenteval'
+  }
+  get group () {
+    return 'owner'
+  }
   execute (msg, args) {
     try {
       for (const worker of this.workers) {
@@ -9,6 +16,5 @@ module.exports = {
     } catch (error) {
       this.master.client.rest.createMessage(msg.channel.id, error.message)
     }
-  },
-  group: 'owner'
+  }
 }

@@ -63,9 +63,8 @@ class Commander extends EventEmitter {
   registerCommands () {
     preaddir('./commands/').then(files => {
       files.forEach(file => {
-        const commandData = require(`../commands/${file}`)
-        const command = new Command(commandData)
-        command.init(this)
+        const commandClass = require(`../commands/${file}`)
+        const command = new commandClass(this)
         this.commands.push(command)
       })
     })

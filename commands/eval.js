@@ -1,7 +1,13 @@
+const Command = require('../types/Command')
 const { inspect } = require('util')
 
-module.exports = {
-  name: 'eval',
+module.exports = class Eval extends Command {
+  get name () {
+    return 'eval'
+  }
+  get group () {
+    return 'owner'
+  }
   execute (msg, args) {
     try {
       for (const worker of this.workers) {
@@ -11,6 +17,5 @@ module.exports = {
     } catch (error) {
       this.master.client.rest.createMessage(msg.channel.id, error.message)
     }
-  },
-  group: 'owner'
+  }
 }

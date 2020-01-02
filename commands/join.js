@@ -1,8 +1,12 @@
-const isNumeric = (number) => !isNaN(number)
+const Command = require('../types/Command')
 
-module.exports = {
-  name: 'join',
-  group: 'admin',
+module.exports = class Join extends Command {
+  get name () {
+    return 'join'
+  }
+  get group () {
+    return 'admin'
+  }
   execute (msg, args) {
     const guild = msg.guild
 
@@ -17,7 +21,7 @@ module.exports = {
     }
 
     let id
-    if (args.length === 1 && isNumeric(args[0])) {
+    if (args.length === 1 && !isNaN(args[0])) {
       id = args[0]
       if (!guild.voiceChannels.has(id)) {
         this.reply(msg, 'No voice channel with that ID exists within this guild.')

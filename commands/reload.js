@@ -1,9 +1,15 @@
+const Command = require('../types/Command')
 const { readdir } = require('fs')
 const { promisify } = require('util')
 const preaddir = promisify(readdir)
 
-module.exports = {
-  name: 'reload',
+module.exports = class Reload extends Command {
+  get name () {
+    return 'reload'
+  }
+  get group () {
+    return 'admin'
+  }
   execute (msg) {
     let out
     try {
@@ -19,6 +25,5 @@ module.exports = {
       this.commander.registerCommands()
     })
     return this.master.createMessage(msg.channel.id, `Reloaded\n\`\`\`bash\n${out}\n\`\`\``)
-  },
-  group: 'admin'
+  }
 }
