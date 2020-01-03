@@ -90,7 +90,7 @@ class Worker extends EventEmitter {
   createMessage (channelId, content, returnBody = false) {
     return this.discordRequest('post', `/channels/${channelId}/messages`, {
       content
-    }, null, returnBody)
+    }, returnBody)
   }
 
   deleteMessage (channelId, messageId) {
