@@ -87,10 +87,14 @@ class Worker extends EventEmitter {
     }, true)
   }
 
-  createMessage (channelId, content) {
+  createMessage (channelId, content, returnBody = false) {
     return this.discordRequest('post', `/channels/${channelId}/messages`, {
       content
-    })
+    }, null, returnBody)
+  }
+
+  deleteMessage (channelId, messageId) {
+    return this.discordRequest('delete', `/channels/${channelId}/messages/${messageId}`)
   }
 
   joinVoiceChannel (guildId, channelId) {
