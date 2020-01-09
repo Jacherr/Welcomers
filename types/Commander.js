@@ -40,19 +40,17 @@ class Commander extends EventEmitter {
   }
 
   async onSomeone (message) {
-    let content = message.content
+    const content = message.content
     const channel = message.channel
     const guild = channel.guild
     const author = message.author
     message.delete()
 
     const getSomeone = () => guild.members.toArray()[Math.floor(Math.random() * guild.members.size)].user.id
-    content = message.content.replace('@someone', () => `<@${getSomeone()}>`).replace(/\@(everyone|here)/g, (match, found) => `@\\${found}`)
+    const webhookContent = content.replaceAll('@someone', () => `<@${getSomeone()}>`)
+      .replace(/@(everyone|here)/g, (match, found) => `@\\${found}`)
     const webhook = await channel.createWebhook({ name: author.username })
-    await webhook.createMessage({
-      avatarUrl: author.avatarUrl,
-      content: content
-    })
+    await webhook.createMessage({ avatarUrl: author.avatarUrl, content: webhookContent })
     webhook.delete()
   }
 
