@@ -1,6 +1,6 @@
 Promise.wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-const { tokens: tokensString, welcomeGuild, masterToken } = require('./config')
+const { tokens: tokensString, welcomeGuild, masterToken, logChannel } = require('./config')
 const Master = require('./types/Master')
 
 const tokens = tokensString.split(',').map(token => token.startsWith('Bot ') ? token : 'Bot ' + token)
@@ -33,7 +33,7 @@ master.on('workerCreate', worker => {
   console.log(`Launched ${master.workers.length}/${master.tokens.length} workers`)
   worker.on('ready', () => {
     try {
-      // worker.createMessage(logChannel, 'Started 😀😉');
+      worker.createMessage(logChannel, 'Started 😀😉');
     } catch (e) {
       console.error('=====\n\nError sending ready message: ' + e.message + '\n\n=====')
     }
